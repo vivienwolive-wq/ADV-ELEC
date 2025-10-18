@@ -1,0 +1,13 @@
+set(0,'DefaultFigurePaperPositionMode','auto');
+set(0,'DefaultFigurePaperType','A4');
+set(0,'DefaultFigurePaperOrientation','landscape');
+set(0,'DefaultAxesXGrid','on') 
+set(0,'DefaultAxesYGrid','on') 
+set(0,'DefaultAxesFontsize',12);
+set(0,'DefaultTextFontsize',1);
+set(0,'DefaultAxesFontname','times');
+set(0,'DefaultTextFontname','times');
+set(0,'DefaultLineLinewidth',1);
+set(0,'DefaultAxesLinewidth',1);
+set(0,'DefaultAxesFontweight','bold');
+set(0,'DefaultTextFontweight','bold');
