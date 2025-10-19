@@ -1,4 +1,3 @@
-
 % ------------------------------------
 % --  Permanent magnet machine
 % ------------------------------------
@@ -17,7 +16,7 @@ mu_win=1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %        Meshing size definition         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-scl=3
+scl=3;
 %Area thickness coefficients
         thi_sta      =  1*scl;
         thi_slo      =  0.8*scl;
@@ -32,57 +31,55 @@ scl=3
 % ---------------------------------------
         Npart=1; % We are studiying a complete machine (keep 1)
 % 	-- Slot number 
-		N_slo_s=180;
+		N_slo_s=24;  % From Excel: 24 slots
 % 	-- Tooth pitch
       op_t_s=2*pi/Npart/N_slo_s;        % in rad
 
 
 % ------------------------------------------------
-% -- Stator slot characteristics
+% -- Stator slot characteristics - UPDATED
 % ------------------------------------------------
 
-	w1_s =  6.5 ;   % --Isthmus opening in mm
-	w2_s =  10 ; %--Low side slot opening in mm
-	w3_s =  10 ;% -High side slot opening in mm
+	w1_s =  4 ;   % --Isthmus opening in mm
+	w2_s =  14 ;  % --Low side slot opening in mm (your selected width)
+	w3_s =  14 ;  % --High side slot opening in mm
 
-	h1_s  =  2 ; %-- Isthmus height in mm
-	h2_s  =  10  ;%-- Base height in mm
-	h3_s  = 30  ;% -- Main height in mm
+	h1_s  =  2 ;  % --Isthmus height in mm
+	h2_s  =  3 ;  % --Base height in mm
+	h3_s  =  24.5 ; % --Main height in mm (your selected total height = 29.5 mm)
                                          
-    % if you want to compare your analytic and the computed slot surface
-    % you can uncomment the folowing line
-    %S_slo=(pi*(w3_s/2)^2)/2+w3_s*h3_s+w1_s*h1_s+(w1_s+w2_s)*h2_s/2;
+    % Slot surface area calculation
+    S_slo=(pi*(w3_s/2)^2)/2+w3_s*h3_s+w1_s*h1_s+(w1_s+w2_s)*h2_s/2;
+    
 % ------------------------------------------------
 % -- Rotor characteristics
 % ------------------------------------------------
 
-   Npoles =20; % Number of poles
-   thi_mag=9.6; % Thickness of the magnets
+   Npoles =4; % Number of poles - From Excel: 4 poles
+   thi_mag=3.0; % Thickness of the magnets - From Excel: 3.4 mm
    p=Npoles/2; % Number of pairs of poles
    Nseg  =6;   % Number of magnet segmentations 
    % Percentage of magnet over a pole pitch in degres and in rad
-   op_mag_deg=15 ;    op_mag=op_mag_deg*pi/180; 
+   op_mag_deg=80 ;    op_mag=op_mag_deg*pi/180;  % From Excel: 80° magnet coverage
    
-
 
 % ------------------------------
 % -- Radius
 % ------------------------------
-	Re   = 650.0;
-	Ra   = 572.95;
-    airgap=3;
-	Rr   = Ra-airgap-thi_mag;
-    Ri   = 380.0;
+	Re   = 300.0;  % Max radius = 300mm (600mm diameter / 2)
+	Ra   = 225;    % Bore radius = 225mm (450mm diameter / 2)
+    airgap=0.6;    % From Excel: 0.8 mm air gap
+	Rr   = Ra-airgap-thi_mag;  % Rotor radius
+    Ri   = 100.0;  % Inner radius
 
-
-Nturns=2; 
+Nturns=9;  % From Excel: 11 turns per coil
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Connectivity matrix
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-
    
-       Mat_C1=[2 2 1 0 0 0 0 0 -1 -2 -2 -1 0 0 0 0 0 1
-               0 0 0 0 0 1 2 2 1 0 0 0 0 0 -1 -2 -2 -1  
-               0 0 -1 -2 -2 -1 0 0 0 0 0 1 2 2 1 0 0 0 ]; 
-Mat_C=[Mat_C1 Mat_C1 Mat_C1 Mat_C1 Mat_C1 Mat_C1 Mat_C1 Mat_C1 Mat_C1 Mat_C1];
+      Mat_C1=[2 2 1 1 0 0 0 0 0 0 -1 -1 -2 -2 -1 -1 0 0 0 0 0 0 1 1
+               0 0 1 1 2 2 1 1 0 0 0 0 0 0 -1 -1 -2 -2 -1 -1 0 0 0 0
+               0 0 0 0 0 0 1 1 2 2 1 1 0 0 0 0 0 0 -1 -1 -2 -2 -1 -1
+]; 
+Mat_C=[Mat_C1];
