@@ -9,8 +9,6 @@ close all ;
 clear clc ;
 addpath('C:\femm42\mfiles')
 
-
-
 shape;
 openfemm
 newdocument(0);
@@ -27,9 +25,9 @@ Ib_sqr=[];
 Ic_sqr=[];
 Torque=[];
 
-% External values
-I=350; % Current
-Omega=17.8; % Rotation speed in rad/
+% External values - FROM EXCEL SPECIFICATIONS
+I=74.07; % Current - Calculated from Excel: 150kW, 750V, cosφ=0.9
+Omega=209.44; % Rotation speed in rad/s - From Excel: 2000 RPM
 
 global_values; % list of the values used in all scripts
 
@@ -43,10 +41,10 @@ PMSM_geometry
 % ------  DEFINITION OF THE PROBLEM---------------------
 % --*************************************************
 freq0=0; % We simulate the machine with a magnetostatic approach (keep 0)
-Len=1000; % Magnetic length of the machine in mm
+Len=340; % Magnetic length of the machine in mm - Close to Excel: 380mm
 Lu =Len*10^-3; % Magnetic length of the machine in m
 mi_probdef(freq0,'millimeters','planar',1.0e-8,Len,2)% frequency , unis, geometry, precision, min angle of triangles
-freq=28.3296; % real frequency of the machine
+freq=66.67; % real frequency of the machine - From Excel: 66.67 Hz
 omega=2*pi*freq; % electric pulse
 
 
@@ -58,9 +56,7 @@ mu_wed=1;
 mu_win=1;
 mu_mag=1;
 % Definition of the coercive field of the chosen magnet 
-Hc_mag=875000; % Do not change
-
-
+Hc_mag=875000; % For NeFeB magnets as specified in Excel
 
 % --**********************************************************
 % --  DEFINITION OF THE MATERIALS   -------
@@ -73,7 +69,7 @@ mi_addmaterial('rotor'    ,mu_rot      ,mu_rot    ,  0      , 0,  0   , 0.45 ,  
 mi_addmaterial('magnet'   ,mu_mag      ,mu_mag    , Hc_mag  , 0,  0   ,  0   ,   0    , 0     , 0  ,0   ,0  ,0 )
 mi_addmaterial('air'      ,mu_air      ,mu_air    , 0 )
 mi_addmaterial('airgap' ,mu_air      ,mu_air    , 0 )
-mi_addmaterial('winding'      ,mu_win      ,mu_win    , 0 , 4, 59.6)
+mi_addmaterial('winding'      ,mu_win      ,mu_win    , 0 , 4, 59.6) % Current density ~4 A/mm² from Excel
 mi_addmaterial('wedge',mu_wed,mu_wed, 0 )
 
 %%%%%%%%% Property b(h) of the stator and the rotor
@@ -101,7 +97,7 @@ mi_clearselected;
 % Loop to calculate MMF and torque over one rotation
 dtheta=3; % increment
 dtheta_rad=pi/180*dtheta;
-End_loop=36 %37 % End of this rotation study in degres
+End_loop=90 %37 % End of this rotation study in degres
 JL_pole=0; % initialisation of Joule Losses
 
 for j=1:dtheta:End_loop
@@ -221,7 +217,4 @@ end
             xlabel('theta in radians')
             ylabel('Torque in N.m')
 
-%closefemm              
-
-          
-            
+%closefemm
