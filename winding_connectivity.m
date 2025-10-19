@@ -19,23 +19,36 @@ function conn_total = winding_connectivity(Ns, p, nph, short_factor)
         error('q must be an integer. Adjust Ns, p, or nph.');
     end
 
-    %% --- Generate base sequence (full pitch) ---
-    % define phase order a, c, b repeating
-    base_phases = {'a','b','c'};
+    %% --- Generate base sequence (specified as "a c' b") ---
+    % base labels (phase names) and base sign for the positive pole
+    base_labels = {'a','c','b'};      % order: a, c, b
+    base_signs  = [ 1, -1, 1 ];      % second entry is negative (c')
+
     base_seq = cell(1, Ns);
-    
-    % build sequence for each pole pair
-    phase_index = 1;
+
+    % build sequence for each pole
     for pole = 1:p
         for ph = 1:nph
             for slot = 1:q
                 idx = (pole-1)*nph*q + (ph-1)*q + slot;
+                lbl = base_labels{ph};
+                sign = base_signs(ph);
+
                 if mod(pole,2) == 1
-                    % positive pole
-                    base_seq{idx} = base_phases{ph};
+                    % positive pole: use base sign
+                    if sign == 1
+                        base_seq{idx} = lbl;
+                    else
+                        base_seq{idx} = [lbl ''''];
+                    end
                 else
-                    % negative pole (reverse polarity)
-                    base_seq{idx} = [base_phases{ph} ''''];
+                    % negative pole: invert sign
+                    if sign == 1
+                        base_seq{idx} = [lbl ''''];
+                    else
+                        % inverted of c' -> c
+                        base_seq{idx} = lbl;
+                    end
                 end
             end
         end
@@ -104,20 +117,30 @@ end
 
 %% --- Helper function for phase assignment ---
 function mat = assign_phase(mat, phase, s)
-    switch phase
+    % Normalize to char
+    pstr = char(phase);
+    % detect prime (apostrophe)
+    is_prime = contains(pstr, '''');
+    % remove apostrophes
+    base = strrep(pstr, '''', '');
+
+    % map base to row index
+    switch lower(base)
         case 'a'
-            mat(1,s) =  1;
-        case "a'"
-            mat(1,s) = -1;
+            row = 1;
         case 'b'
-            mat(2,s) =  1;
-        case "b'"
-            mat(2,s) = -1;
+            row = 2;
         case 'c'
-            mat(3,s) =  1;
-        case "c'"
-            mat(3,s) = -1;
+            row = 3;
+        otherwise
+            return;
     end
+
+    val = 1;
+    if is_prime
+        val = -1;
+    end
+    mat(row, s) = val;
 end
 
 %% --- Helper: format matrix as Matlab literal ---
