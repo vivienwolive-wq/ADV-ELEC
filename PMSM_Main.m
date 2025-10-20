@@ -41,10 +41,10 @@ PMSM_geometry
 % ------  DEFINITION OF THE PROBLEM---------------------
 % --*************************************************
 freq0=0; % We simulate the machine with a magnetostatic approach (keep 0)
-Len=400; % Magnetic length of the machine in mm - Close to Excel: 380mm
+Len=540; % Magnetic length of the machine in mm - Close to Excel: 380mm
 Lu =Len*10^-3; % Magnetic length of the machine in m
 mi_probdef(freq0,'millimeters','planar',1.0e-8,Len,2)% frequency , unis, geometry, precision, min angle of triangles
-freq=100; % real frequency of the machine - From Excel: 66.67 Hz
+freq=66.67; % real frequency of the machine - From Excel: 66.67 Hz
 omega=2*pi*freq; % electric pulse
 
 
@@ -97,7 +97,7 @@ mi_clearselected;
 % Loop to calculate MMF and torque over one rotation
 dtheta=3; % increment
 dtheta_rad=pi/180*dtheta;
-End_loop=60 %37 % End of this rotation study in degres
+End_loop=180 %37 % End of this rotation study in degres
 JL_pole=0; % initialisation of Joule Losses
 
 for j=1:dtheta:End_loop
