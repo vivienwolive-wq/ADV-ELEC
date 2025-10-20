@@ -110,7 +110,7 @@ for j=1:dtheta:End_loop
     mi_moverotate(0,0,dtheta)
     end
     mi_clearselected
-    mi_saveas('C:\Users\vivie\Documents\Ecam\Year 4\Semester 7\Advanced Electrical Machines & Applications\Labs\Code-20251010\PMSM180.fem')
+    mi_saveas('C:\Users\keshi\Documents\femm_files\ADV-ELEC-main (1)\ADV-ELEC-main\PMSM180.fem')
     mi_zoomnatural
     mi_createmesh
     mi_analyse
