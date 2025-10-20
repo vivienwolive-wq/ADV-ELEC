@@ -42,11 +42,11 @@ scl=3;
 
 	w1_s =  4 ;   % --Isthmus opening in mm
 	w2_s =  10 ;  % --Low side slot opening in mm (your selected width)
-	w3_s =  10;  % --High side slot opening in mm
+	w3_s =  15;  % --High side slot opening in mm
 
 	h1_s  =  2 ;  % --Isthmus height in mm
 	h2_s  =  3 ;  % --Base height in mm
-	h3_s  =  15; % --Main height in mm (your selected total height = 29.5 mm)
+	h3_s  =  25; % --Main height in mm (your selected total height = 29.5 mm)
                                          
     % Slot surface area calculation
     S_slo=(pi*(w3_s/2)^2)/2+w3_s*h3_s+w1_s*h1_s+(w1_s+w2_s)*h2_s/2;
@@ -72,7 +72,7 @@ scl=3;
 	Rr   = Ra-airgap-thi_mag;  % Rotor radius
     Ri   = 100.0;  % Inner radius
 
-Nturns=6;  % From Excel: 11 turns per coil
+Nturns=8;  % From Excel: 11 turns per coil
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Connectivity matrix
